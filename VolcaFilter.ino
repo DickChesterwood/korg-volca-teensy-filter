@@ -1,3 +1,4 @@
+
 /**
  * Korg Volca Filter firmware.
  * 
@@ -10,9 +11,10 @@
  * Channels 11-14 are assumed to be any other device and are rebroadcast. (We don't Midi-Thru channels 1-10 as these would trigger the Volca Sample)
  * 
  * TODO midi implementation chart.
- * TODO sysex is not supported.
- * TODO this only runs on Arduino Mega right now (need Hardware Serial). Why can't we run on pins 0 and 1 on an Uno? Need to port to a small board mountable device.
+ * TODO sysex is not supported yet
+ * TODO need to filter out song start messages as the volcas keep playing the sequencers when I run the keyboard's Arp
  * TODO sample is ignoring velocity as well. Same fix as the FM?
+ * TODO consider chromiatic playing for the sample
  */
 
 const byte VOLCA_SAMPLE_CHANNEL = 16;
@@ -29,11 +31,15 @@ const byte STATUS_CHANNEL_PRESSURE = 0xD0;
 const byte STATUS_MIDI_TIME_CODE = 0xF1;
 const byte STATUS_SONG_SELECT = 0xF3;
 
-bool awaitingVolcaSampleData = false;
-bool awaitingDataByte2 = false;
-byte lastStatusReceived = 0;
-byte dataByte1;
-byte dataByte2;
+const byte NUMBER_OF_INPUT_CHANNELS = 3;
+
+// Teensy LC pin. Just used to flash on startup.
+const byte ledPin = 13;
+
+bool awaitingDataByte2[] = {false, false, false};
+byte lastStatusReceived[] = {0,0,0};
+byte dataByte1[NUMBER_OF_INPUT_CHANNELS];
+byte dataByte2[NUMBER_OF_INPUT_CHANNELS];
 
 void setup() {
 
@@ -41,19 +47,30 @@ void setup() {
     Serial.begin(115200);
 
     // Hardware serial connected to Midi Thru section of circuit.
-    
-    Serial1.begin(31250);
+    Serial1.begin(31250);      
+    Serial2.begin(31250);      
+    Serial3.begin(31250);      
 
-    Serial.println("Korg Volca Firmware v0.1 Ready.");
+    Serial.println("Korg Volca Firmware v0.2 (Multi In) Ready.");
+
+    pinMode(ledPin, OUTPUT);
+
+    for (int i=0; i<1000; i+=100)
+    {
+      digitalWrite(ledPin, HIGH);
+      delay(50);
+      digitalWrite(ledPin, LOW);
+      delay(50);
+    }
+
 }
 
+// Nb - in this hardware, all broadcasts are done through Serial1 as Midi Thru is
+// Handled in hardware.
 void midiBroadcast(byte status, byte dataByte1)
 {  
   Serial1.write(status); 
   Serial1.write(dataByte1);
-  byte channel = (status & B00001111) + 1;
-  Serial.print("Ch "); Serial.print(channel);
-  Serial.print(" Sent "); Serial.print(status);   Serial.print(":"); Serial.print(dataByte1);  
 }
 
 void midiBroadcast(byte status, byte dataByte1, byte dataByte2)
@@ -64,7 +81,6 @@ void midiBroadcast(byte status, byte dataByte1, byte dataByte2)
   midiFilter(status, dataByte1, dataByte2);
   midiBroadcast(status, dataByte1);
   Serial1.write(dataByte2);
-  Serial.print(":"); Serial.print(dataByte2);
 }
 
 void midiFilter(byte &status, byte &dataByte1, byte &dataByte2)
@@ -76,9 +92,8 @@ void midiFilter(byte &status, byte &dataByte1, byte &dataByte2)
   {
     if (command == STATUS_NOTE_ON || command == STATUS_NOTE_OFF)
     {
-      channel = dataByte1 % 12; // TODO a proper mapping here maybe?
-      Serial.print("as databyte is "); Serial.println(dataByte1); Serial.print(" the channel is going to be "); Serial.println(channel);
-      if (channel > 10) return; // "Only" 10 channels on Sample.
+      channel = dataByte1 % 12;
+      if (channel >= 10) return; // "Only" 10 channels on Sample.
       status = command | channel;
     }
   }
@@ -94,44 +109,30 @@ void midiFilter(byte &status, byte &dataByte1, byte &dataByte2)
   }
 }
 
-void processStatusByte(byte midiByte)
+void processStatusByte(byte midiByte, byte midiInputChannel)
 {  
   if ((midiByte & B10000000) == B10000000)
   {
-     lastStatusReceived = midiByte;
-
-   Serial.print("rx "); Serial.println(midiByte);
-   byte nChan = (midiByte & B00001111) + 1;
-   
-   Serial.print("chan "); Serial.println(nChan);
-   byte command = (midiByte & B11110000);
-   Serial.print("command "); Serial.println(command);
-
-   awaitingDataByte2 = false;
+     lastStatusReceived[midiInputChannel] = midiByte;
+     awaitingDataByte2[midiInputChannel] = false;
   }
 }
 
-void processDataByte(byte midiByte)
+void processDataByte(byte midiByte, byte midiInputChannel)
 {   
    if ((midiByte & B10000000) == B00000000)
    {
-      if (!awaitingDataByte2)
+      if (!awaitingDataByte2[midiInputChannel])
       {
-        dataByte1 = midiByte;
-
-        Serial.print("note "); Serial.println(dataByte1);
-
-        
+        dataByte1[midiInputChannel] = midiByte;
       }
       else
       {
-        dataByte2 = midiByte;
-   Serial.print("second byte "); Serial.println(dataByte2);
-        
+        dataByte2[midiInputChannel] = midiByte;
       }
 
       // handle the state transition
-      switch(lastStatusReceived & B11110000)
+      switch(lastStatusReceived[midiInputChannel] & B11110000)
       {
         case STATUS_NOTE_ON:
         case STATUS_NOTE_OFF:
@@ -139,42 +140,54 @@ void processDataByte(byte midiByte)
         case STATUS_CONTROL_CHANGE:
         case STATUS_PITCH_BEND:
         case STATUS_SONG_POSITION: 
-                   if (!awaitingDataByte2) 
+                   if (!awaitingDataByte2[midiInputChannel]) 
                    {
-                     awaitingDataByte2 = true;
+                     awaitingDataByte2[midiInputChannel] = true;
                      break;
                    }
                    else
                    {
                      // Done. Broadcast.
-                     midiBroadcast(lastStatusReceived, dataByte1, dataByte2);
-                     awaitingDataByte2 = false;
+                     midiBroadcast(lastStatusReceived[midiInputChannel], dataByte1[midiInputChannel], dataByte2[midiInputChannel]);
+                     awaitingDataByte2[midiInputChannel] = false;
                      break;
                    }
         case STATUS_PROGRAM_CHANGE:
         case STATUS_CHANNEL_PRESSURE:
         case STATUS_MIDI_TIME_CODE:
         case STATUS_SONG_SELECT:
-                   midiBroadcast(lastStatusReceived, dataByte1);
-                   awaitingDataByte2 = false;
+                   midiBroadcast(lastStatusReceived[midiInputChannel], dataByte1[midiInputChannel]);
+                   awaitingDataByte2[midiInputChannel] = false;
                    break;
      }
    }
-   Serial.println();
 }
 
-void processMidiByte(byte midiByte)
+void processMidiByte(byte midiByte, byte midiInputChannel)
 {
-   processStatusByte(midiByte);
-   processDataByte(midiByte);
+   processStatusByte(midiByte,midiInputChannel);
+   processDataByte(midiByte,midiInputChannel);
 }
 
 
 
 void loop () {
-    if (Serial1.available() > 0) {
-        byte midiByte = Serial1.read();
-        Serial.print("RAW MIDI IN : "); Serial.println(midiByte);
-        processMidiByte(midiByte);       
-    }        
+       if (Serial1.available() > 0) {
+           Serial.println("Received on input channel 0");
+           byte midiByte = Serial1.read();
+           processMidiByte(midiByte, 0);       
+       }              
+
+       if (Serial2.available() > 0) {
+           Serial.println("Received on input channel 1");
+           byte midiByte = Serial2.read();
+           processMidiByte(midiByte, 1);       
+       }              
+
+       if (Serial3.available() > 0) {
+           Serial.println("Received on input channel 2");
+           byte midiByte = Serial2.read();
+           processMidiByte(midiByte, 2);       
+       }              
+
 }
