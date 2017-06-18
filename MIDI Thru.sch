@@ -12771,15 +12771,15 @@ PIN-Connection corrected by http://www.ti.com/lit/ds/symlink/lp2950-n.pdf&lt;br&
 <part name="JP10" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X3" device="" value="OUT5"/>
 <part name="FRAME1" library="frames" library_urn="urn:adsk.eagle:library:229" deviceset="A4L-LOC" device=""/>
 <part name="D1" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="DIODE" device="DO-1N4148" value="1N4148"/>
-<part name="IC1" library="ic-package" library_urn="urn:adsk.eagle:library:239" deviceset="DIL8" device="" value="3N136"/>
+<part name="IC1" library="ic-package" library_urn="urn:adsk.eagle:library:239" deviceset="DIL8" device="" value="6N136"/>
 <part name="R1" library="eagle-ltspice" library_urn="urn:adsk.eagle:library:217" deviceset="R" device="0204/7" value="220"/>
 <part name="JP5" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" value="MIDI IN 2"/>
 <part name="D2" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="DIODE" device="DO-1N4148" value="1N4148"/>
-<part name="IC2" library="ic-package" library_urn="urn:adsk.eagle:library:239" deviceset="DIL8" device="" value="3N136"/>
+<part name="IC2" library="ic-package" library_urn="urn:adsk.eagle:library:239" deviceset="DIL8" device="" value="6N136"/>
 <part name="R2" library="eagle-ltspice" library_urn="urn:adsk.eagle:library:217" deviceset="R" device="0204/7" value="220"/>
 <part name="JP11" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" value="MIDI IN 3"/>
 <part name="D3" library="adafruit" library_urn="urn:adsk.eagle:library:420" deviceset="DIODE" device="DO-1N4148" value="1N4148"/>
-<part name="IC3" library="ic-package" library_urn="urn:adsk.eagle:library:239" deviceset="DIL8" device="" value="3N136"/>
+<part name="IC3" library="ic-package" library_urn="urn:adsk.eagle:library:239" deviceset="DIL8" device="" value="6N136"/>
 <part name="R3" library="eagle-ltspice" library_urn="urn:adsk.eagle:library:217" deviceset="R" device="0204/7" value="220"/>
 <part name="TEENSY_LC" library="Teensy_3_and_LC_Series_Boards_v1.4" deviceset="TEENSY_LC_ALL_PINS" device=""/>
 <part name="R4" library="eagle-ltspice" library_urn="urn:adsk.eagle:library:217" deviceset="R" device="0204/7" value="10K"/>
