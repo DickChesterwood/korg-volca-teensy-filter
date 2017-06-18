@@ -12,4 +12,6 @@ Note the LC's pins run at 3.3v, hence my clumsy bolt on of a second Voltage Regu
 
 TODO My next job is to transition this from breadboard to veroboard, where it probably all overheat and blow up.
 
+TODO a Midi panic button on the front panel would be good.
+
 ![Schematic](https://github.com/DickChesterwood/korg-volca-teensy-filter/blob/master/Schematic.png?raw=true)
