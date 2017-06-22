@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>C:/cygwin64/home/Work/midi/korg-volca-teensy-filter/kicad/MIDI Thru v2/MIDI Thru v2.sch</source>
+    <date>20/06/2017 09:36:56</date>
+    <tool>Eeschema 4.0.4-stable</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title>Midi Merge/Filter/Thru</title>
+        <company>CapabilityTM</company>
+        <rev>1.0</rev>
+        <date>2017-06-19</date>
+        <source>MIDI Thru v2.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="P1">
+      <value>9v DC IN</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_2x01_Pitch2.54mm</footprint>
+      <libsource lib="conn" part="CONN_01X02"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5947E678</tstamp>
+    </comp>
+    <comp ref="U1">
+      <value>7805</value>
+      <footprint>TO_SOT_Packages_THT:TO-220_Vertical</footprint>
+      <libsource lib="regul" part="7805"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5947E94C</tstamp>
+    </comp>
+    <comp ref="D2">
+      <value>1N4001</value>
+      <footprint>Diodes_ThroughHole:D_DO-41_SOD81_P12.70mm_Horizontal</footprint>
+      <libsource lib="device" part="D"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5947EE16</tstamp>
+    </comp>
+    <comp ref="P2">
+      <value>9v DC OUT</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_2x01_Pitch2.54mm</footprint>
+      <libsource lib="conn" part="CONN_01X02"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5947EF24</tstamp>
+    </comp>
+    <comp ref="D1">
+      <value>1N4001</value>
+      <footprint>Diodes_ThroughHole:D_DO-41_SOD81_P12.70mm_Horizontal</footprint>
+      <libsource lib="device" part="D"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5947EF8D</tstamp>
+    </comp>
+    <comp ref="D3">
+      <value>1N4001</value>
+      <footprint>Diodes_ThroughHole:D_DO-41_SOD81_P12.70mm_Horizontal</footprint>
+      <libsource lib="device" part="D"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5947F192</tstamp>
+    </comp>
+    <comp ref="P3">
+      <value>POWER LED</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_2x01_Pitch2.54mm</footprint>
+      <libsource lib="conn" part="CONN_01X02"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5947F258</tstamp>
+    </comp>
+    <comp ref="R1">
+      <value>R</value>
+      <footprint>Resistors_ThroughHole:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal</footprint>
+      <libsource lib="device" part="R"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5947F2C5</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>47uF</value>
+      <footprint>Capacitors_ThroughHole:CP_Radial_D5.0mm_P2.50mm</footprint>
+      <libsource lib="device" part="CP"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5947F54E</tstamp>
+    </comp>
+    <comp ref="P4">
+      <value>5v DC OUT</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_2x01_Pitch2.54mm</footprint>
+      <libsource lib="conn" part="CONN_01X02"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5947F9C4</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>0.1uF</value>
+      <footprint>Capacitors_ThroughHole:CP_Radial_D5.0mm_P2.50mm</footprint>
+      <libsource lib="device" part="C"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>5947FA9C</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="regul" part="7805">
+      <aliases>
+        <alias>LM7805</alias>
+        <alias>LM7812</alias>
+        <alias>78L05</alias>
+      </aliases>
+      <description>Linear Regulator +5V</description>
+      <docs>regulator\lm78xx.pdf</docs>
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">7805</field>
+      </fields>
+      <pins>
+        <pin num="GND" name="GND" type="input"/>
+        <pin num="VI" name="VI" type="input"/>
+        <pin num="VO" name="VO" type="power_out"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="C">
+      <description>Unpolarized capacitor</description>
+      <footprints>
+        <fp>C?</fp>
+        <fp>C_????_*</fp>
+        <fp>C_????</fp>
+        <fp>SMD*_c</fp>
+        <fp>Capacitor*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="conn" part="CONN_01X02">
+      <description>Connector, single row, 01x02</description>
+      <footprints>
+        <fp>Pin_Header_Straight_1X02</fp>
+        <fp>Pin_Header_Angled_1X02</fp>
+        <fp>Socket_Strip_Straight_1X02</fp>
+        <fp>Socket_Strip_Angled_1X02</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">P</field>
+        <field name="Value">CONN_01X02</field>
+      </fields>
+      <pins>
+        <pin num="1" name="P1" type="passive"/>
+        <pin num="2" name="P2" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="CP">
+      <description>Polarised capacitor</description>
+      <footprints>
+        <fp>CP*</fp>
+        <fp>C_Axial*</fp>
+        <fp>C_Radial*</fp>
+        <fp>TantalC*</fp>
+        <fp>C*elec</fp>
+        <fp>c_elec*</fp>
+        <fp>SMD*_Pol</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">CP</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="D">
+      <description>Diode</description>
+      <footprints>
+        <fp>Diode_*</fp>
+        <fp>D-Pak_TO252AA</fp>
+        <fp>*SingleDiode</fp>
+        <fp>*_Diode_*</fp>
+        <fp>*SingleDiode*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">D</field>
+        <field name="Value">D</field>
+      </fields>
+      <pins>
+        <pin num="1" name="K" type="passive"/>
+        <pin num="2" name="A" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="device" part="R">
+      <description>Resistor</description>
+      <footprints>
+        <fp>R_*</fp>
+        <fp>Resistor_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">R</field>
+        <field name="Value">R</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="device">
+      <uri>C:\Program Files\KiCad\share\kicad\library\device.lib</uri>
+    </library>
+    <library logical="conn">
+      <uri>C:\Program Files\KiCad\share\kicad\library\conn.lib</uri>
+    </library>
+    <library logical="regul">
+      <uri>C:\Program Files\KiCad\share\kicad\library\regul.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Net-(P3-Pad2)">
+      <node ref="R1" pin="2"/>
+      <node ref="P3" pin="2"/>
+    </net>
+    <net code="2" name="Net-(C2-Pad1)">
+      <node ref="U1" pin="VO"/>
+      <node ref="P4" pin="1"/>
+      <node ref="C2" pin="1"/>
+    </net>
+    <net code="3" name="Net-(C1-Pad1)">
+      <node ref="R1" pin="1"/>
+      <node ref="U1" pin="VI"/>
+      <node ref="D2" pin="1"/>
+      <node ref="D3" pin="1"/>
+      <node ref="C1" pin="1"/>
+    </net>
+    <net code="4" name="Net-(D1-Pad1)">
+      <node ref="D1" pin="1"/>
+      <node ref="P2" pin="2"/>
+    </net>
+    <net code="5" name="Net-(D1-Pad2)">
+      <node ref="D1" pin="2"/>
+      <node ref="D2" pin="2"/>
+      <node ref="P1" pin="2"/>
+    </net>
+    <net code="6" name="Net-(C1-Pad2)">
+      <node ref="C1" pin="2"/>
+      <node ref="P1" pin="1"/>
+      <node ref="P4" pin="2"/>
+      <node ref="P3" pin="1"/>
+      <node ref="D3" pin="2"/>
+      <node ref="P2" pin="1"/>
+      <node ref="U1" pin="GND"/>
+      <node ref="C2" pin="2"/>
+    </net>
+  </nets>
+</export>
