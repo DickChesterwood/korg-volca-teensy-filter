@@ -36,7 +36,7 @@ const byte NUMBER_OF_INPUT_CHANNELS = 3;
 // Teensy LC pin. Just used to flash on startup.
 const byte ledPin = 13;
 
-const byte panicButtonPin = 11;     // the number of the pushbutton pin
+const byte panicButtonPin = 13;     // the number of the pushbutton pin
 
 bool awaitingDataByte2[] = {false, false, false};
 byte lastStatusReceived[] = {0,0,0};
